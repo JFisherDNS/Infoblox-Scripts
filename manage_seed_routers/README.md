@@ -1,4 +1,4 @@
-for the manage seed routers script, the GUID for the discovery appliance will need to be referenced.
+for the update_seed routers_script, the GUID for the discovery appliance will need to be referenced.
 The GUID is enumerated at the discovery:memberproperties wapi endpoint.
 
 The easiest way to discover this is with a CURL command
