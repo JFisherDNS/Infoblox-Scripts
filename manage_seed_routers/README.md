@@ -12,7 +12,8 @@ curl -k -u <username>:<password> "https://<gridmaster_fqdn>/wapi/v2.13.6/discove
         "discovery_member": "discoverymember-01.lab"
   
   
-   
+with "ZGlzY292ZXJ5Lm1lbvszvrfassa9kaXNjb3ZlcnlfcHJvcGVydGllcyQz" being the guid of the discovery member
+
     
 
 
