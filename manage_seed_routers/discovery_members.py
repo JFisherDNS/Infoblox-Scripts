@@ -5,18 +5,24 @@ from dotenv import load_dotenv
 # Load environment variables from .env
 load_dotenv()
 
-WAPI_HOST = os.getenv("WAPI_HOST")
+WAPI_HOST_FQDN = os.getenv("WAPI_HOST_FQDN")
 WAPI_VERSION = os.getenv("WAPI_VERSION")
 WAPI_USER = os.getenv("WAPI_USER")
 WAPI_PASS = os.getenv("WAPI_PASS")
 
-if not all([WAPI_HOST, WAPI_VERSION, WAPI_USER, WAPI_PASS]):
+if not all([WAPI_HOST_FQDN, WAPI_VERSION, WAPI_USER, WAPI_PASS]):
     print("❌ Missing required environment variables in .env file.")
     exit(1)
 
-url = f"https://{WAPI_HOST}/wapi/v{WAPI_VERSION}/discovery:memberproperties"
-# Remove double 'v' if WAPI_VERSION already starts with 'v'
-url = url.replace("v2.v", "v2.")
+# Strip 'https://' from WAPI_HOST_FQDN if present
+if WAPI_HOST_FQDN.startswith("https://"):
+    host = WAPI_HOST_FQDN[len("https://"):]
+else:
+    host = WAPI_HOST_FQDN
+
+# Build the URL for the discovery:memberproperties endpoint
+
+url = f"https://{host}/wapi/{WAPI_VERSION}/discovery:memberproperties"
 
 response = requests.get(
     url,
@@ -33,4 +39,3 @@ if response.status_code == 200:
         print(f"Name: {name}, GUID: {guid}")
 else:
     print(f"❌ Error ({response.status_code}): {response.text}")
-    
