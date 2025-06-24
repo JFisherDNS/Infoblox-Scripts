@@ -9,14 +9,14 @@ from dotenv import load_dotenv
 # --- Load environment variables from .env ---
 load_dotenv()
 
-WAPI_HOST = os.getenv("WAPI_HOST")
+WAPI_HOST_FQDN = os.getenv("WAPI_HOST_FQDN")
 WAPI_VERSION = os.getenv("WAPI_VERSION")
 WAPI_USER = os.getenv("WAPI_USER")
 WAPI_PASS = os.getenv("WAPI_PASS")
 MEMBERPROPERTIES_REF = os.getenv("MEMBERPROPERTIES_REF")
 CSV_FILE = os.getenv("CSV_FILE", "seed_routers.csv")
 
-if not all([WAPI_HOST, WAPI_VERSION, WAPI_USER, WAPI_PASS, MEMBERPROPERTIES_REF]):
+if not all([WAPI_HOST_FQDN, WAPI_VERSION, WAPI_USER, WAPI_PASS, MEMBERPROPERTIES_REF]):
     print("❌ Missing required environment variables in .env file.")
     exit(1)
 
@@ -34,7 +34,7 @@ with open(CSV_FILE, newline='') as csvfile:
         seed_routers.append(router)
 
 # --- Send PUT request ---
-url = f"{WAPI_HOST}/wapi/{WAPI_VERSION}/discovery:memberproperties/{MEMBERPROPERTIES_REF}"
+url = f"{WAPI_HOST_FQDN}/wapi/{WAPI_VERSION}/discovery:memberproperties/{MEMBERPROPERTIES_REF}"
 headers = {"Content-Type": "application/json"}
 
 response = requests.put(
