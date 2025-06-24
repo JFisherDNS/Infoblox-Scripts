@@ -1,0 +1,3 @@
+infoblox-client
+python-dotenv
+requests
