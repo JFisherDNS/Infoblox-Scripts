@@ -1,0 +1,36 @@
+import os
+import requests
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
+WAPI_HOST = os.getenv("WAPI_HOST")
+WAPI_VERSION = os.getenv("WAPI_VERSION")
+WAPI_USER = os.getenv("WAPI_USER")
+WAPI_PASS = os.getenv("WAPI_PASS")
+
+if not all([WAPI_HOST, WAPI_VERSION, WAPI_USER, WAPI_PASS]):
+    print("❌ Missing required environment variables in .env file.")
+    exit(1)
+
+url = f"https://{WAPI_HOST}/wapi/v{WAPI_VERSION}/discovery:memberproperties"
+# Remove double 'v' if WAPI_VERSION already starts with 'v'
+url = url.replace("v2.v", "v2.")
+
+response = requests.get(
+    url,
+    auth=(WAPI_USER, WAPI_PASS),
+    verify=False  # Skip SSL verification like curl -k
+)
+
+if response.status_code == 200:
+    data = response.json()
+    for member in data:
+        ref = member.get('_ref', '')
+        guid = ref.split('/')[1].split(':')[0] if ref else 'N/A'
+        name = member.get('discovery_member', 'N/A')
+        print(f"Name: {name}, GUID: {guid}")
+else:
+    print(f"❌ Error ({response.status_code}): {response.text}")
+    
